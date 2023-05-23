@@ -1,11 +1,15 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import React from "react";
+import React, { useContext } from "react";
 
 //library imports
 
+//component imports
+import GlobalContext from "../Context/GlobalContext";
+
 function Day({day, rowidx}) {
 
+  const {setSelectedDay, setShowEventModal} = useContext(GlobalContext)
     dayjs.extend(customParseFormat);
     const days = dayjs(day, "YYYY-MM-DD HH:mm A");
     //console.log(days)
@@ -33,6 +37,12 @@ function Day({day, rowidx}) {
             {days.format("DD")}
           </p>
         </header>
+        <div className="flex-1 cursor-pointer" onClick={()=>{
+setSelectedDay(day);
+setShowEventModal(true);
+        }}>
+
+        </div>
       </div>
     );
 }

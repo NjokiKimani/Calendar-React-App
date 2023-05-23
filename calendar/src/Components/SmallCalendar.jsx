@@ -31,7 +31,6 @@ useEffect(() => {
     setCurrentMonthIndex(currentMonthIndex - 1);
   }
 
-  dayjs.extend(customParseFormat);
 
   function handleNextMonth() {
     setCurrentMonthIndex(currentMonthIndex + 1);
@@ -40,14 +39,20 @@ useEffect(() => {
   dayjs.extend(customParseFormat);
   const getCurrentDayClass = (day) => {
     const currentDay = dayjs(day, "YYYY-MM-DD HH:mm A");
-const daySelected = selectedDay && selectedDay.format("DD-MM-YY")
+   dayjs.extend(customParseFormat);
+  // const slcDay = selectedDay.format("DD-MM-YY")
+//const daySelected = selectedDay && slcDay;
+
     if(currentDay.format("DD-MM-YY") === dayjs().format("DD-MM-YY")){
       return "bg-blue-500 text-white rounded-full"}
-      else if (currentDay.format("DD-MM-YY") === daySelected){
-return "bg-blue-100 rounded-full text-blue-600 font-bold"
+      else if (
+        currentDay.format("DD-MM-YY") === selectedDay &&
+        selectedDay.format("DD-MM-YY")
+      ) {
+        return "bg-blue-100 rounded-full text-blue-600 font-bold";
+      } else {
+        return "";
       }
-      else{
-        return ""}
   };
   return (
     <div className="mt-9">

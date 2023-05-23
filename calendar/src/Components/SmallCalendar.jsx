@@ -22,7 +22,9 @@ function SmallCalendar() {
 
   const { monthIndex, setSmallCalendarMonth, selectedDay, setSelectedDay } = useContext(GlobalContext);
 
-
+useEffect(() => {
+    setCurrentMonthIndex(monthIndex)
+}, [monthIndex])
   const mon = dayjs((new Date(dayjs().year(), currentMonthIndex)))
   
   function handlePrevMonth() {

@@ -24,7 +24,8 @@ function CalendarHeader() {
   }
 
   function handleReset(){
-    setMonthIndex(dayjs().month())
+    setMonthIndex(monthIndex === dayjs().month() ? 
+    monthIndex + Math.random() : dayjs().month())
   }
   return (
     <header className="px-4 py-2 flex items-center">

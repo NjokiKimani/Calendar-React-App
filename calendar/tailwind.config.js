@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -6,8 +7,11 @@ export default {
       fontFamily: {
         poppins: ["Poppins"],
       },
+      gridTemplateColumns:{
+        "1/5": "1fr 5fr"
+      }
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 };
 

@@ -7,14 +7,17 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 //assets imports
-import { DragHandle, Close, Schedule, BookmarkBorder, Check } from "@material-ui/icons";
+import { DragHandle, Close, Schedule, BookmarkBorder, Check, Delete } from "@material-ui/icons";
 import SegmentIcon from "@mui/icons-material/Segment";
 
 export default function EventModal() {
-  const[title, setTitle] = useState('')
-  const[description, setDescription] = useState('')
-  const[selectedLabel, setSelectedLabel]=useState(labelsClasses[0])
-  const{setShowEventModal, selectedDay, dispatch } = useContext(GlobalContext)
+
+    const { setShowEventModal, selectedDay, dispatch, selectedEvents } =
+      useContext(GlobalContext);
+
+  const[title, setTitle] = useState(selectedEvents ? selectedEvents.title : "")
+  const[description, setDescription] = useState(selectedEvents ? selectedEvents.description : "")
+  const[selectedLabel, setSelectedLabel]=useState(selectedEvents ? labelsClasses.find((lbl) => lbl === selectedEvents.label) : labelsClasses[0])
 
 
   function handleSubmit (e){
@@ -24,9 +27,15 @@ const calendarEvent = {
   description, 
   label: selectedLabel,
   day: selectedDay.valueOf(),
-  id: Date.now()
+  id: selectedEvents ? selectedEvents.id : Date.now(),
 }
-dispatch ({type: 'push', payload: calendarEvent})
+if(selectedEvents){
+dispatch({ type: "update", payload: calendarEvent });
+}
+else{
+  dispatch({ type: "push", payload: calendarEvent });
+
+}
 setShowEventModal(false)
   }
    dayjs.extend(customParseFormat);
@@ -39,11 +48,19 @@ setShowEventModal(false)
           <span className="text-gray-400">
             <DragHandle />
           </span>
-          <button onClick={() => setShowEventModal(false)}>
-            <span className="text-gray-400">
-              <Close />
-            </span>
-          </button>
+          <div>
+            {selectedEvents && (
+                <span onClick={()=> {dispatch({type:'delete', payload: selectedEvents})
+                setShowEventModal(false)}} className="text-gray-400">
+                  <Delete />
+                </span>
+            )}
+            <button onClick={() => setShowEventModal(false)}>
+              <span className="text-gray-400">
+                <Close />
+              </span>
+            </button>
+          </div>
         </header>
         <div className="p-3">
           <div className="grid grid-cols-1/5 items-end gap-y-7 ">
@@ -96,8 +113,12 @@ focus: outline-none focus:ring-0 focus:border-blue-500"
           </div>
         </div>
         <footer className="flex justify-end border-t pt-3 mt-5">
-          <button type="submit" onClick={handleSubmit} className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white' >
-                Save
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white"
+          >
+            Save
           </button>
         </footer>
       </form>

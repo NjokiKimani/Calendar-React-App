@@ -9,7 +9,7 @@ import GlobalContext from "../Context/GlobalContext";
 
 function Day({day, rowidx}) {
 
-    const { setSelectedDay, setShowEventModal, savedEvents } =
+    const { setSelectedDay, setShowEventModal, savedEvents, setSelectedEvents } =
       useContext(GlobalContext);
     dayjs.extend(customParseFormat);
     const days = dayjs(day, "YYYY-MM-DD HH:mm A");
@@ -52,10 +52,10 @@ setSelectedDay(day);
 setShowEventModal(true);
         }}>
 {dayEvents.map((evt, idx)=> (
-  <div key={idx} className={`bg-${evt.label}-200 p-1 mr-3 text-gray-600 rounded text-sm mb-1 truncate`}>
+  <div key={idx} onClick={()=> setSelectedEvents(evt)} className={`bg-red-200 p-1 mr-3 text-gray-600 rounded text-sm mb-1 truncate`}>
 {evt.title}
-hello
     </div>
+    
 ))}
         </div>
       </div>

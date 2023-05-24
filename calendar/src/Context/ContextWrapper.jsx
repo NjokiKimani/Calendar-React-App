@@ -32,6 +32,7 @@ function ContextWrapper(props) {
     const[selectedDay, setSelectedDay] = useState(dayjs())
     const[showEventModal, setShowEventModal] = useState(false)
     const [savedEvents, dispatch] = useReducer(savedEventsReducer, [], initial_Events )
+    const[selectedEvents, setSelectedEvents] = useState(null)
 
 useEffect (()=> {
 localStorage.setItem('savedEvents', JSON.stringify(savedEvents))
@@ -46,7 +47,7 @@ if(smallCalendarMonth !== null){
     return (
     <div>
 <GlobalContext.Provider value={{monthIndex, setMonthIndex, smallCalendarMonth, setSmallCalendarMonth, selectedDay, setSelectedDay,
-showEventModal, setShowEventModal, dispatch, savedEvents}}>
+showEventModal, setShowEventModal, dispatch, savedEvents, selectedEvents, setSelectedEvents}}>
 {props.children}
 </GlobalContext.Provider>
 

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 //library imports
 
@@ -9,9 +9,19 @@ import GlobalContext from "../Context/GlobalContext";
 
 function Day({day, rowidx}) {
 
-  const {setSelectedDay, setShowEventModal} = useContext(GlobalContext)
+    const { setSelectedDay, setShowEventModal, savedEvents } =
+      useContext(GlobalContext);
     dayjs.extend(customParseFormat);
     const days = dayjs(day, "YYYY-MM-DD HH:mm A");
+
+  const [dayEvents, setDayEvents] = useState([])
+
+  useEffect (() =>{
+    const events = savedEvents.filter(evt => dayjs(evt.day).format('DD-MM-YY')===days.format('DD-MM-YY'))
+    setDayEvents(events)
+  }, [savedEvents, day])
+
+
     //console.log(days)
   const getCurrentDayClass=()=>{
     return(
@@ -41,7 +51,12 @@ function Day({day, rowidx}) {
 setSelectedDay(day);
 setShowEventModal(true);
         }}>
-
+{dayEvents.map((evt, idx)=> (
+  <div key={idx} className={`bg-${evt.label}-200 p-1 mr-3 text-gray-600 rounded text-sm mb-1 truncate`}>
+{evt.title}
+hello
+    </div>
+))}
         </div>
       </div>
     );

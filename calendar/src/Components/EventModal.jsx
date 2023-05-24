@@ -14,8 +14,21 @@ export default function EventModal() {
   const[title, setTitle] = useState('')
   const[description, setDescription] = useState('')
   const[selectedLabel, setSelectedLabel]=useState(labelsClasses[0])
-  const{setShowEventModal, selectedDay } = useContext(GlobalContext)
+  const{setShowEventModal, selectedDay, dispatch } = useContext(GlobalContext)
 
+
+  function handleSubmit (e){
+e.preventDefault()
+const calendarEvent = {
+  title, 
+  description, 
+  label: selectedLabel,
+  day: selectedDay.valueOf(),
+  id: Date.now()
+}
+dispatch ({type: 'push', payload: calendarEvent})
+setShowEventModal(false)
+  }
    dayjs.extend(customParseFormat);
    const planDay = dayjs(selectedDay, "YYYY-MM-DD HH:mm A");
    
@@ -83,7 +96,7 @@ focus: outline-none focus:ring-0 focus:border-blue-500"
           </div>
         </div>
         <footer className="flex justify-end border-t pt-3 mt-5">
-          <button type="submit" className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white' >
+          <button type="submit" onClick={handleSubmit} className='bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white' >
                 Save
           </button>
         </footer>
